@@ -13,6 +13,7 @@ This resource type will be used to manage the deployment instances of your compl
 
 An simple example of the use of this type of resource can be seen in the sample Terraform configuration document.
 
+''json
   terraform {
     required_providers {
       amenesik = {
