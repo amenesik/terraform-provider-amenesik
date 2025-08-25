@@ -13,11 +13,11 @@ provider "amenesik" {
   host     = "phoenix.amenesik.com"
 }
 
-resource "amenesik_app" "terrabal" {
+resource "amenesik_app" "terramulti" {
   template  = "abal64-u2004-mysql-small-template"
-  program   = "terrabal"
+  program   = "terramulti"
   domain    = "openabal.com"
-  region    = "france"
+  region    = "[france,germany,italy]"
   category  = "amazonec2"
   param     = "4:8:16"
 }
@@ -29,6 +29,6 @@ variable "ace_api_key" {
 }
 
 output "one" {
-  value = amenesik_app.terrabal
+  value = amenesik_app.terramulti
 }
 

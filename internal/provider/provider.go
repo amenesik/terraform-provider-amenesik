@@ -195,15 +195,14 @@ func (p *amenesikProvider) Configure(ctx context.Context, req provider.Configure
 
 // DataSources defines the data sources implemented in the provider.
 func (p *amenesikProvider) DataSources(_ context.Context) []func() datasource.DataSource {
-  return []func() datasource.DataSource {
-    NewBeamDataSource,
-  }
+  return nil
 }
 
 // Resources defines the resources implemented in the provider.
 func (p *amenesikProvider) Resources(_ context.Context) []func() resource.Resource {
     return []func() resource.Resource{
         NewAppResource,
+	NewBeamResource,
     }
 }
 
