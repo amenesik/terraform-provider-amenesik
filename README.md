@@ -100,10 +100,11 @@ Node Templates may be of the following types:
 
 The amenesik terraform provider BEAM resource type subsequently allows the definition, creation, management and destruction of BEAM documents.
 
-A complex example of a Topology Template described by BEAM is shown below:
+A example of a complex Topology Template, described by a single BEAM document, is shown below, with the links between nodes representing the information provided by the Relationship Templates. 
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/76abce16-25c9-4d30-afe9-207e23d0fa68" />
 
+This example describes the deployment, configuration and interconnection, of twelve virtual machine nodes in one geographical region, with 7 further virtual machine nodes in a secondary geographical region, bridged by both regional entry points, and global traffic manager service instances.
 
 
 
