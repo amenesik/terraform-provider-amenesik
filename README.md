@@ -25,14 +25,14 @@ An simple example of the use of this type of resource can be seen in the sample 
     
     provider "amenesik" {
       apikey   = var.ace_api_key
-      account  = "amenesik"
+      account  = "myaccount"
       host     = "phoenix.amenesik.com"
     }
     
-    resource "amenesik_app" "terrabal" {
+    resource "amenesik_app" "myapp" {
       template  = "abal64-u2004-mysql-small-template"
-      program   = "terrabal"
-      domain    = "openabal.com"
+      program   = "myapp"
+      domain    = "mydomain.com"
       category  = "amazonec2"
       region    = "france"
       param     = "4:8:16"
@@ -44,8 +44,8 @@ An simple example of the use of this type of resource can be seen in the sample 
             sensitive = true
     }
     
-    output "one" {
-      value = amenesik_app.terrabal
+    output "myapp" {
+      value = amenesik_app.myapp
     }
 
 The terraform section indicates the required use of the involved providers, as is customary for Terraform configuration documents, in this case the amenesik provider.
