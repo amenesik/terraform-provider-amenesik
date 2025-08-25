@@ -55,7 +55,7 @@ The provider section defines the configuration values required for the amenesik 
 - account : the provisioning account name on the corresponding Amenesik Enterprise Cloud platform.
 - apikey : the API KEY associated with the provisioning account. This is a sensitive value and should be not be written in plain text on configuration documents.
 
-The variable ace_api_key allows the sensitive string value of the amenesik provider API KEY to be defined throiugh the Terraform variable management mechanisms, including environment variables, terraform command line switches and prompted user input values.
+The variable ace_api_key allows the sensitive string value of the amenesik provider API KEY to be defined through the Terraform variable management mechanisms, including environment variables, terraform command line switches and prompted user input values.
 
 The resource section provides the values for the required parameters of an amenesik provider APP resource:
 - template: The value of this property indicates the name of the BEAM document describing the details of the application configuration.
