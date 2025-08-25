@@ -13,30 +13,30 @@ This resource type will be used to manage the deployment instances of your compl
 
 An simple example of the use of this type of resource can be seen in the sample Terraform configuration document.
 
-''json
-  terraform {
-    required_providers {
-      amenesik = {
-        source  = "hashicorp.com/edu/amenesik"
+  
+    terraform {
+      required_providers {
+        amenesik = {
+          source  = "hashicorp.com/edu/amenesik"
+        }
       }
+      required_version = ">= 1.1.0"
     }
-    required_version = ">= 1.1.0"
-  }
-  
-  provider "amenesik" {
-    apikey   = var.ace_api_key
-    account  = "amenesik"
-    host     = "phoenix.amenesik.com"
-  }
-  
-  resource "amenesik_app" "terrabal" {
-    template  = "abal64-u2004-mysql-small-template"
-    program   = "terrabal"
-    domain    = "openabal.com"
-    category  = "amazonec2"
-    region    = "france"
-    param     = "4:8:16"
-  }
+    
+    provider "amenesik" {
+      apikey   = var.ace_api_key
+      account  = "amenesik"
+      host     = "phoenix.amenesik.com"
+    }
+    
+    resource "amenesik_app" "terrabal" {
+      template  = "abal64-u2004-mysql-small-template"
+      program   = "terrabal"
+      domain    = "openabal.com"
+      category  = "amazonec2"
+      region    = "france"
+      param     = "4:8:16"
+    }
   
   variable "ace_api_key" {
           description = "ACE secret API KEY for user account"
