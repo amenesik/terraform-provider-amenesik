@@ -39,9 +39,9 @@ An simple example of the use of this type of resource can be seen in the sample 
     }
   
     variable "ace_api_key" {
-            description = "ACE secret API KEY for user account"
-            type = string
-            sensitive = true
+      description = "ACE secret API KEY for user account"
+      type = string
+      sensitive = true
     }
     
     output "myapp" {
@@ -64,6 +64,15 @@ The resource section provides the values for the required parameters of an amene
 - category: this property indicates the name of the Amenesik Enterprise Cloud service provision type.
 - region: this property indicates the name of the region and will be used in conjunction with the category property value for cloud provider region selection.
 - param: this property allows application specific supplimentary parameters to be passed to the application instance during its startup.
+
+Management of the deployment of this APP instance would be performed using the standard terraform command:
+
+    $ terraform plan
+    $ terraform apply
+    $ teraform show
+    $ terraform destroy 
+
+from the folder containing the application configuration file.
 
 ## Beam
 This resource type will be used to manage the BEAM description documents of your complex, multi-cloud, business application.
