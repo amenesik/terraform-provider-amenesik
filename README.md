@@ -77,6 +77,26 @@ from the folder containing the application configuration file.
 ## Beam
 This resource type will be used to manage the BEAM description documents of your complex, multi-cloud, business application.
 
+The BEAM document format, being one of the outcomes of the H2020 European project known as BASMATI, is an accronym for Basmati Enhanced Application Model.
+
+BEAM is a derivation of the standard TOSCA document format with the addition of standardised TAG values for the specification of information relating to the Service Level Agreement terms that describe the conditions and guarantees required for the deployment and life-cycle management of the application service.
+
+A standard BEAM document comprises a collection of Node Type definitions and the application's Service Template.
+
+The Service Template comprises the collection of BEAM Tag values and the application Topology Template.
+
+The Topology Template comprises the collection of Node Templates describing the nature, composition and requirements of the service nodes required by the application.
+
+Node Templates may be of the following types:
+- Hardware nodes describing machines
+- Software nodes describing software layers and configurations to be applied to Hardware nodes.
+- Service nodes performing service oriented operations on behalf of any of the other node types.
+
+The amenesik terraform provider BEAM resource subsequently type allows the definition, creation, management and destruction of BEAM documents.
+
+
+
+
 
 
 
