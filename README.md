@@ -38,15 +38,15 @@ An simple example of the use of this type of resource can be seen in the sample 
       param     = "4:8:16"
     }
   
-  variable "ace_api_key" {
-          description = "ACE secret API KEY for user account"
-          type = string
-          sensitive = true
-  }
-  
-  output "one" {
-    value = amenesik_app.terrabal
-  }
+    variable "ace_api_key" {
+            description = "ACE secret API KEY for user account"
+            type = string
+            sensitive = true
+    }
+    
+    output "one" {
+      value = amenesik_app.terrabal
+    }
 
 The terraform section indicates the required use of the involved providers, as is customary for Terraform configuration documents, in this case the amenesik provider.
 
