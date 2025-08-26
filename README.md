@@ -83,6 +83,7 @@ This resource type will be used to manage the BEAM description documents of comp
 
 The BEAM document format, being one of the outcomes of the H2020 European project known as BASMATI, is an accronym for Basmati Enhanced Application Model.
 
+### Introduction
 BEAM is a conforming derivation of the standard TOSCA document format, with the addition of standardised TAG values for the specification of information relating to the Service Level Agreement terms that describe the conditions and guarantees required for the deployment and life-cycle management of the application service.
 
 A complete BEAM document comprises a collection of Node Type definitions, which may result from import statements, and the application's Service Template.
@@ -110,6 +111,7 @@ This complex, yet concrete example, describes the deployment, configuration and 
 - accessible by both regional entry points,
 - and balanced by a global traffic manager service instance.
 
+### Example
 The following Terraform configuration file shows a simple example of a BEAM resource.
 
     resource "amenesik_beam" "redhat" { 
@@ -199,6 +201,7 @@ Secondly a large quad-cored cpu with 16G or memory and 100G of disk.
 
 From the above examples it should be noted that the data array of the BEAM resource describes the properties and their values of the required BEAM document.
 
+### Syntax
 BEAM documents comprise ordered collections of NODES, RELATIONS and PROBES (a specialisation of the node).
 
 A Data Path must be defined with respect to one of these three document roots or arrays:
@@ -212,7 +215,8 @@ The corresponding value will depend on the nature of the path.
 - for relations : the value will be the required target node of the relation.
 - for probes : the value will be the required value of the property.
 
-The following property names exist for all node paths outside of capability extensions.
+#### Nodes
+The following property names exist for all node paths outside of any capability extensions.
 
 - name : the name of the node
 - type : the usage type of the node as Compute or other Software layer definitions.
@@ -268,7 +272,41 @@ The following structure describes the properties that would be required for a ty
 
 In real world situations a a large number of nodes would be defined each with their own specific collections of capabilities and their associated properties.
 
-The complex example shown above, requires 22 hardware (Compute) nodes and 19 software nodes of four different classes (LDAP, TOMCAT, APACHE, HAPROXY). The corresponding BEAM document would naturally be correspondingly complex.
+The complex example shown above, requires 22 hardware (Compute) nodes, 19 software nodes of four different classes (LDAP, TOMCAT, APACHE, HAPROXY) and roughly 50 relations. In addition a variety of probes would be required for both hardware and software operation and failover monitoring.  The resulting BEAM document would naturally be correspondingly complex.
 
+### Probes
+The following properties are defined for the monitoring probes.
 
+- metric : the definition of the type of information, its collection frequency and its means of collection. These may be defined per account by the Amenesik Enterprise Cloud.
+- condition : the nature of the comparaison with the threshold value (eq, gr, ls, ge, le, ne)
+- threshold : the threshold value which when reached requires remediative "penalty" action to be engaged.
+- type : the nature of the remediation action invocation (one of OCCISCRIPT, BASH, PYTHON)
+- nature : the purpose or nature of the action (one of penalty, reward, both). When "reward" or "both" then the actio will be engaged before threshold is reached.
+- behaviour : the name of the OCCI, BASH or PYTHON script describing the subsequent action.
 
+### Relations
+A relation is required to be defined when a secondary (target) node construction (hardware and software elements) requires autotamtion of its connection to a primary (source) node construction (hardware and software elements) during the deployment of infrastructural APP resources.
+
+The target node is said to receive connection information from the source node during the configuration (or construction) phase of its life cycle.
+
+The following Data definition of a BEAM resources shows the properties required to describe and establish such a connection, always defined between the hardware nodes.
+
+    resource "amenesik_beam" "small" { 
+      ...
+    	data     = [
+        { path = "node.1.type" value = "Compute" }
+        { path = "node.2.type" value = "Database" }
+        { path = "node.3.type" value = "Compute" }
+        { path = "node.4.type" value = "WebServer" }
+    		{
+    		path = "relation . node . 1 . hostname"
+    		value = "node.3"
+    		}      
+      ]
+    }
+
+In this example the Compute node of the WebServer configuration will receive the hostname of the Compute node of the Database configuration.
+
+In most cases, the subject of the relationship will be the hostname of the source. 
+
+In certain cases, especially concerning automation of load balancing scenarios, it is necessary that the subject of the relationship be the contract identifier of the source, facilitating replication of the source, by the target, in accordance with percieved load.
