@@ -266,5 +266,9 @@ The following structure describes the properties that would be required for a ty
 - node.2.capability.property1
 - node.2.capability.propertyN
 
-in real world situations a collection of different capabilities and their associated properties would be involved.
+In real world situations a a large number of nodes would be defined each with their own specific collections of capabilities and their associated properties.
+
+The complex example shown above, requires 22 hardware (Compute) nodes and 19 software nodes of four different classes (LDAP, TOMCAT, APACHE, HAPROXY). The corresponding BEAM document would naturally be correspondingly complex.
+
+
 
