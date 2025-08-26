@@ -184,15 +184,15 @@ Secondly a large quad-cored cpu with 16G or memory and 100G of disk.
     	data     = [
     		{
     		path = "node.1.host.num_cpus"
-    		value = "1"
+    		value = "4"
     		},
     		{
     		path = "node.1.host.mem_size"
-    		value = "2G"
+    		value = "16G"
     		},
     		{
     		path = "node.1.host.disk_size"
-    		value = "20G"
+    		value = "100G"
     		}      
       ]
     }
