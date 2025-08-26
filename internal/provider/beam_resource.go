@@ -37,6 +37,13 @@ type beamResourceModel struct {
     Param	types.String     `tfsdk:"param"`
     State       types.String     `tfsdk:"state"`
     LastUpdated types.String     `tfsdk:"last_updated"`
+    Data        []beamChangeModel   `tfsdk:"data"`
+}
+
+// the beam change request model
+type beamChangeModel struct {
+    Path        types.String	`tfsdk:"path"`
+    Value	types.String	`tfsdk:"value"`
 }
 
 func (r *beamResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -80,6 +87,21 @@ func (r *beamResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
                 Computed: false,
 		Required: true,
             },
+            "data": &schema.ListNestedAttribute{
+		Required: true,
+		NestedObject: schema.NestedAttributeObject{
+		    Attributes: map[string]schema.Attribute{
+		        "path": schema.StringAttribute{
+			     Computed: false,
+			     Required: true,
+		        },
+		        "value": schema.StringAttribute{
+                             Computed: false,
+                             Required: true,
+		        },
+                    },
+		},
+            },
         },
     }
 }
@@ -117,15 +139,28 @@ func (r *beamResource) Create(ctx context.Context, req resource.CreateRequest, r
 
     var br *BeamResponse
 
-    // CLONE a BEAM model with specific provisioning characteristics
+    // CLONE a BEAM model with specific provisioning characteristics and action data
     br, err = r.client.CloneBeamModel(ctx,template, program, domain, region, category )
     if err != nil {
 	tflog.Info(ctx,"AMENESIK:BEAM ERROR: CLONE BEAM MODEL: "+err.Error());
         return
     }
+
+    for _, item := range plan.Data {
+    	// prepare the Change Request
+    	data := UnQuote(item.Path.String())+":"+UnQuote(item.Value.String())
+
+    	// CHANGE a BEAM model with specific provisioning characteristics and action data
+    	br, err = r.client.ChangeBeamModel(ctx,template, program, domain, region, category, data )
+    	if err != nil {
+		tflog.Info(ctx,"AMENESIK:BEAM ERROR: CHANGE BEAM MODEL: "+err.Error());
+	        return
+	}
+    }
+
     // prepare the final state description
     if br.status == "200" {
-	    br.status = "locked"
+	    br.status = "created"
     }
     plan.ID = types.StringValue(time.Now().Format(time.RFC3339))
     plan.State = types.StringValue(br.status)

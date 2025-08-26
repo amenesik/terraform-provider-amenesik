@@ -165,6 +165,39 @@ func (c *Client) CloneBeamModel(ctx context.Context,template string, program str
 }
 
 // ----------------------------------------------------------------------
+// CHANGE BEAM MODEL ( template, program, domain region, category )
+// ----------------------------------------------------------------------
+// Clones a new BEAM template from the specified template using program
+// to replace the "template", and setting the instance hostname as the
+// concatenation of the values of the program and domain parameters. The
+// Cloud Provider will be set to the value of "category" in the "region".
+// ----------------------------------------------------------------------
+func (c *Client) ChangeBeamModel(ctx context.Context,template string, program string, domain string, region string, category string, data string ) (*BeamResponse, error) {
+    tflog.Info(ctx,"AMENESIK:ACE: CLONE BEAM MODEL: "+template+"-"+program)
+    reqBody := map[string]string{"auth":c.token,"action": "change", "subject": "beam", "account": c.account, "template": UnQuote(template), "program": UnQuote(program), "domain": UnQuote(domain), "region": UnQuote(region), "provider": UnQuote(category), "data":UnQuote(data) }
+    body, _ := json.Marshal(reqBody)
+
+    req, _ := http.NewRequest("POST", c.baseURL, bytes.NewReader(body))
+    req.Header.Set("Authorization", "Bearer "+c.token)
+    resp, err := http.DefaultClient.Do(req)
+    if err != nil {
+        return nil, err
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode != 200 {
+        return nil, fmt.Errorf("failed to create model: %s", resp.Status)
+    }
+
+    var bi BeamResponse
+    bi.status = "cloned"
+    bi.result.name = program
+    bi.result.status = "200"
+    tflog.Info(ctx,"AMENESIK:ACE: CLONE BEAM MODEL: "+template+"-"+program+": SUCCESS")
+    return &bi, nil
+}
+
+// ----------------------------------------------------------------------
 // CREATE BEAM INSTANCE ( template, program, domain, param )
 // ----------------------------------------------------------------------
 // Creates a BEAM Application Controller instance fromi the cloned BEAM

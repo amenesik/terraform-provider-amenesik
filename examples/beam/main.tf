@@ -19,12 +19,4 @@ provider "amenesik" {
   host     = "phoenix.amenesik.com"
 }
 
-resource "amenesik_beam" "example" { 
-	template = "template"
-	program  = "example-template"
-	domain   = "openabal.com"
-	region   = "any"
-	category = "any"
-	param    = "none"
-}	
 
