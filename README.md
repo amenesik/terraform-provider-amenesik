@@ -170,7 +170,7 @@ Firstly a small single cpu machine with 2G of memory and 20G of disk.
     		value = "20G"
     		}      
       ]
-   }
+    }
 
 Secondly a large quad-cored cpu with 16G or memory and 100G of disk.
 
@@ -195,7 +195,7 @@ Secondly a large quad-cored cpu with 16G or memory and 100G of disk.
     		value = "20G"
     		}      
       ]
-   }
+    }
 
 From the above examples it should be noted that the data array of the BEAM resource describes the properties and their values of the required BEAM document.
 
