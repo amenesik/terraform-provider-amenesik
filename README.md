@@ -110,10 +110,159 @@ This complex, yet concrete example, describes the deployment, configuration and 
 - accessible by both regional entry points,
 - and balanced by a global traffic manager service instance.
 
+The following Terraform configuration file shows a simple example of a BEAM resource.
 
+    resource "amenesik_beam" "redhat" { 
+    	template = "example-template"
+    	program  = "rhel9-template"
+    	domain   = "mydomain.com"
+    	region   = "any"
+    	category = "any"
+    	param    = "none"
+    	data     = [
+    		{
+    		path = "node.1.name"
+    		value = "hardware-node"
+    		},
+      	{
+    		path = "node.1.type"
+    		value = "Compute"
+    		},
+    		{
+    		path = "node.2.name"
+    		value = software-node"
+    		},
+        {
+    		path = "node.2.type"
+    		value = "Database"
+    		},
+    		{
+    		path = "node.2.base"
+    		value = "hardware-node"
+    		}
+    	]
+    }
 
+The above example shows two BEAM (TOSCA) nodes, the first a hardware node of type Compute, and a software node, of type Database, that  uses the hardware Compute node as its base.
 
+This can be extended further, to produce two derived templates of differing infrastructure dimensions.
 
+Firstly a small single cpu machine with 2G of memory and 20G of disk.
 
-  
+    resource "amenesik_beam" "small" { 
+    	template = "example-rhel9-template"
+    	program  = "small-template"
+    	domain   = "mydomain.com"
+    	region   = "any"
+    	category = "any"
+    	param    = "none"
+    	data     = [
+    		{
+    		path = "node.1.host.num_cpus"
+    		value = "1"
+    		},
+    		{
+    		path = "node.1.host.mem_size"
+    		value = "2G"
+    		},
+    		{
+    		path = "node.1.host.disk_size"
+    		value = "20G"
+    		}      
+      ]
+   }
+
+Secondly a large quad-cored cpu with 16G or memory and 100G of disk.
+
+    resource "amenesik_beam" "small" { 
+    	template = "example-rhel9-template"
+    	program  = "small-template"
+    	domain   = "mydomain.com"
+    	region   = "any"
+    	category = "any"
+    	param    = "none"
+    	data     = [
+    		{
+    		path = "node.1.host.num_cpus"
+    		value = "1"
+    		},
+    		{
+    		path = "node.1.host.mem_size"
+    		value = "2G"
+    		},
+    		{
+    		path = "node.1.host.disk_size"
+    		value = "20G"
+    		}      
+      ]
+   }
+
+From the above examples it should be noted that the data array of the BEAM resource describes the properties and their values of the required BEAM document.
+
+BEAM documents comprise ordered collections of NODES, RELATIONS and PROBES (a specialisation of the node).
+
+A Data Path must be defined with respect to one of these three document roots or arrays:
+
+- node.<number>[.<capability>].<property>
+- relation.node.<number>
+- probe.<number>.property
+
+The corresponding value will depend on the nature of the path.
+- for nodes : the value will be the required value of the property.
+- for relations : the value will be the required target node of the relation.
+- for probes : the value will be the required value of the property.
+
+The following property names exist for all node paths outside of capability extensions.
+
+- name : the name of the node
+- type : the usage type of the node as Compute or other Software layer definitions.
+- base : the parent node of a node layering collection, where the hardware node provides a base for a subsequent chain of software node layers. 
+
+The optional capability of a node path expression may be one of the following.
+
+- host : the collection of host properties of the Compute node type.
+- os : the collection of operating system properties of the Compute node type.
+- other capability values may be used for node type specific capability parameters.
+
+The host capability defines the following properties
+
+- num_cpus : the number of cores or virtual cpus for the Compute node.
+- mem_size : the size of the memory suffixed by M or G
+- disk_size : the size of the disk, suffixed by M, G or T
+- volume : the name of an attached volume
+- entry : the entry point description
+- hostname : the fully qualified host and domain name
+- provider : the provisioning category, when specific to a node
+- region : the provisioning region when specific to a node
+- vlan : the vlan to which the node should be attached
+- tcp_port : a TCP port to be opened in the firewall or security group
+- udp_port : a UDP port to be opened in the firewall or security group
+- tcp_range : a dash or comma separated range of TCP ports to be opened in the firewall or security group
+- udp_range : a dash or comma separated range of UDP ports to be opened in the firewall or security group
+- protocol : the network protocol
+- cluster : the name of the cluster for a container compute node
+- namespace : the name of the namespace for a container compute node
+ 
+The os capability defines the following properties
+
+- architecture : describes the hardware architecture such as x86_64
+- type : indicates the operating system family as linux or windows
+- distribution : the name of the distribution as WINDOWS, UBUNTU or RHEL
+- version : the version of the specified distribution such as 20.04 or 9
+
+The properties of the software node types are type specific and require consultation of the product capabilites on the amenesik web site.
+
+The following structure describes the properties of a typical combination of hardware and software nodes
+
+- node.1.name
+- node.1.type
+- node.1.host.num_cpus
+- node.1.host.mem_size
+- node.1.host.disk_size
+- node.1.host.hostname
+- node.2.name
+- node.2.type
+- node.2.base
+- node.2.capability.property1
+- node.2.capability.propertyN
 
