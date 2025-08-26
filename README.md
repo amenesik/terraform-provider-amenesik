@@ -252,7 +252,7 @@ The os capability defines the following properties
 
 The properties of the software node types are type specific and require consultation of the product capabilites on the amenesik web site.
 
-The following structure describes the properties of a typical combination of hardware and software nodes
+The following structure describes the properties that would be required for a typical combination of hardware and software nodes
 
 - node.1.name
 - node.1.type
@@ -265,4 +265,6 @@ The following structure describes the properties of a typical combination of har
 - node.2.base
 - node.2.capability.property1
 - node.2.capability.propertyN
+
+in real world situations a collection of different capabilities and their associated properties would be involved.
 
