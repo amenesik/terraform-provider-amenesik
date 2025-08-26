@@ -203,9 +203,9 @@ BEAM documents comprise ordered collections of NODES, RELATIONS and PROBES (a sp
 
 A Data Path must be defined with respect to one of these three document roots or arrays:
 
-- node.<number>[.<capability>].<property>
-- relation.node.<number>
-- probe.<number>.property
+- node . < number > [ . < capability > ] . < property >
+- relation . node . < number >
+- probe . < number > . property
 
 The corresponding value will depend on the nature of the path.
 - for nodes : the value will be the required value of the property.
