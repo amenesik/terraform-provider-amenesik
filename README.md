@@ -289,7 +289,7 @@ A relation is required to be defined when a secondary (target) node construction
 
 The target node is said to receive connection information from the source node during the configuration (or construction) phase of its life cycle.
 
-The following Data definition of a BEAM resources shows the properties required to describe and establish such a connection, always defined between the hardware nodes.
+The following Data definition of a BEAM resource shows the properties required to describe and establish such a connection, always defined between the hardware nodes.
 
     resource "amenesik_beam" "small" { 
       ...
