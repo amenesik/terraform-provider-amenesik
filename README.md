@@ -306,10 +306,10 @@ The following Data definition of a BEAM resource shows the properties required t
     resource "amenesik_beam" "small" { 
       ...
     	data     = [
-        { path = "node.1.type" value = "Compute" }
-        { path = "node.2.type" value = "Database" }
-        { path = "node.3.type" value = "Compute" }
-        { path = "node.4.type" value = "WebServer" }
+        { path = "node.1.type", value = "Compute" },
+        { path = "node.2.type", value = "Database" },
+        { path = "node.3.type", value = "Compute" },
+        { path = "node.4.type", value = "WebServer" },
     		{
     		path = "relation . node . 1 . hostname"
     		value = "node.3"
@@ -345,9 +345,9 @@ The following configuration document snippet shows an example of tag definitions
       ...
     	data     = [
         ...
-        { path = tag.Title" value = "My Document Title" }
-        { path = "tag.Author" value = "The document Author name" }
-        { path = "tag.Probe" value = "memory-free" }
+        { path = tag.Title", value = "My Document Title" },
+        { path = "tag.Author", value = "The document Author name" },
+        { path = "tag.Probe", value = "memory-free" },
         ...
       ]
     }
@@ -371,8 +371,8 @@ The following configuration document snippet shows an example of tag definitions
       ...
     	data     = [
         ...
-        { path = import" value = "Database" }
-        { path = "import" value = "WebServer" }
+        { path = import", value = "Database" },
+        { path = "import", value = "WebServer" },
         ...
       ]
     }
