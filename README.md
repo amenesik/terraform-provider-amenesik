@@ -83,6 +83,7 @@ This resource type will be used to manage the BEAM description documents of comp
 
 The BEAM document format, being one of the outcomes of the H2020 European project known as BASMATI, is an accronym for Basmati Enhanced Application Model.
 
+### Introduction
 BEAM is a conforming derivation of the standard TOSCA document format, with the addition of standardised TAG values for the specification of information relating to the Service Level Agreement terms that describe the conditions and guarantees required for the deployment and life-cycle management of the application service.
 
 A complete BEAM document comprises a collection of Node Type definitions, which may result from import statements, and the application's Service Template.
@@ -110,10 +111,428 @@ This complex, yet concrete example, describes the deployment, configuration and 
 - accessible by both regional entry points,
 - and balanced by a global traffic manager service instance.
 
+### Example
+The following Terraform configuration file shows a simple example of a BEAM resource.
+
+    resource "amenesik_beam" "redhat" { 
+    	template = "example-template"
+    	program  = "rhel9-template"
+    	domain   = "mydomain.com"
+    	region   = "any"
+    	category = "any"
+    	param    = "none"
+    	data     = [
+    		{
+    		path = "node.1.name"
+    		value = "hardware-node"
+    		},
+      	{
+    		path = "node.1.type"
+    		value = "Compute"
+    		},
+    		{
+    		path = "node.2.name"
+    		value = software-node"
+    		},
+        {
+    		path = "node.2.type"
+    		value = "Database"
+    		},
+    		{
+    		path = "node.2.base"
+    		value = "hardware-node"
+    		}
+    	]
+    }
+
+The above example shows two BEAM (TOSCA) nodes, the first a hardware node of type Compute, and a software node, of type Database, that  uses the hardware Compute node as its base.
+
+This can be extended further, to produce two derived templates of differing infrastructure dimensions.
+
+Firstly a small single cpu machine with 2G of memory and 20G of disk.
+
+    resource "amenesik_beam" "small" { 
+    	template = "example-rhel9-template"
+    	program  = "small-template"
+    	domain   = "mydomain.com"
+    	region   = "any"
+    	category = "any"
+    	param    = "none"
+    	data     = [
+    		{
+    		path = "node.1.host.num_cpus"
+    		value = "1"
+    		},
+    		{
+    		path = "node.1.host.mem_size"
+    		value = "2G"
+    		},
+    		{
+    		path = "node.1.host.disk_size"
+    		value = "20G"
+    		}      
+      ]
+    }
+
+Secondly a large quad-cored cpu with 16G or memory and 100G of disk.
+
+    resource "amenesik_beam" "small" { 
+    	template = "example-rhel9-template"
+    	program  = "small-template"
+    	domain   = "mydomain.com"
+    	region   = "any"
+    	category = "any"
+    	param    = "none"
+    	data     = [
+    		{
+    		path = "node.1.host.num_cpus"
+    		value = "4"
+    		},
+    		{
+    		path = "node.1.host.mem_size"
+    		value = "16G"
+    		},
+    		{
+    		path = "node.1.host.disk_size"
+    		value = "100G"
+    		}      
+      ]
+    }
+
+From the above examples it should be noted that the data array of the BEAM resource describes the properties and their values of the required BEAM document.
+
+### Syntax
+BEAM documents comprise ordered collections of NODES, RELATIONS and PROBES (a specialisation of the node).
+
+A Data Path must be defined with respect to one of these three document roots or arrays:
+
+- node . < identifier > [ . < capability > ] . < property >
+- relation . node . < number > . [ hostname | contract ]
+- probe . < identifier > . < property >
+- type . < name > . < property >
+- tag . < name >
+- import
+- copy . node
+
+In the general syntax above, the term 'identifier' may be a number of the name of the node or probe. Afte the use of the 'copy' operation the term 'last' may be used to address the most recently created node.
+
+The corresponding value will depend on the nature of the path.
+- for nodes : the value will be the required value of the property.
+- for relations : the value will be the required target node of the relation.
+- for probes : the value will be the required value of the property.
+
+#### Nodes
+The following property names exist for all node paths outside of any capability extensions.
+
+- name : the name of the node
+- type : the usage type of the node as Compute or other Software layer definitions.
+- base : the parent node of a node layering collection, where the hardware node provides a base for a subsequent chain of software node layers. 
+
+The optional capability of a node path expression may be one of the following.
+
+- host : the collection of host properties of the Compute node type.
+- os : the collection of operating system properties of the Compute node type.
+- other capability values may be used for node type specific capability parameters.
+
+The host capability defines the following properties
+
+- num_cpus : the number of cores or virtual cpus for the Compute node.
+- mem_size : the size of the memory suffixed by M or G
+- disk_size : the size of the disk, suffixed by M, G or T
+- volume : the name of an attached volume
+- entry : the entry point description
+- hostname : the fully qualified host and domain name
+- provider : the provisioning category, when specific to a node
+- region : the provisioning region when specific to a node
+- vlan : the vlan to which the node should be attached
+- tcp_port : a TCP port to be opened in the firewall or security group
+- udp_port : a UDP port to be opened in the firewall or security group
+- tcp_range : a dash or comma separated range of TCP ports to be opened in the firewall or security group
+- udp_range : a dash or comma separated range of UDP ports to be opened in the firewall or security group
+- protocol : the network protocol
+- cluster : the name of the cluster for a container compute node
+- namespace : the name of the namespace for a container compute node
+ 
+The os capability defines the following properties
+
+- architecture : describes the hardware architecture such as x86_64
+- type : indicates the operating system family as linux or windows
+- distribution : the name of the distribution as WINDOWS, UBUNTU or RHEL
+- version : the version of the specified distribution such as 20.04 or 9
+
+The properties of the software node types are type specific and require consultation of the product capabilites on the amenesik web site.
+
+The following structure describes the properties that would be required for a typical combination of hardware and software nodes
+
+- node.1.name
+- node.1.type
+- node.1.host.num_cpus
+- node.1.host.mem_size
+- node.1.host.disk_size
+- node.1.host.hostname
+- node.2.name
+- node.2.type
+- node.2.base
+- node.2.capability.property1
+- node.2.capability.propertyN
+
+In real world situations a a large number of nodes would be defined each with their own specific collections of capabilities and their associated properties.
+
+The complex example shown above, requires 22 hardware (Compute) nodes, 19 software nodes of four different classes (LDAP, TOMCAT, APACHE, HAPROXY) and roughly 50 relations. In addition a variety of probes would be required for both hardware and software operation and failover monitoring.  The resulting BEAM document would naturally be correspondingly complex.
+
+### Probes
+The following properties are defined for the monitoring probes.
+
+- metric : the definition of the type of information, its collection frequency and its means of collection. These may be defined per account by the Amenesik Enterprise Cloud.
+- condition : the nature of the comparaison with the threshold value (eq, gr, ls, ge, le, ne)
+- threshold : the threshold value which when reached requires remediative "penalty" action to be engaged.
+- type : the nature of the remediation action invocation (one of OCCISCRIPT, BASH, PYTHON)
+- nature : the purpose or nature of the action (one of penalty, reward, both). When "reward" or "both" then the actio will be engaged before threshold is reached.
+- behaviour : the name of the OCCI, BASH or PYTHON script describing the subsequent action.
+
+### Relations
+A relation is required to be defined when a secondary (target) node construction (hardware and software elements) requires autotamtion of its connection to a primary (source) node construction (hardware and software elements) during the deployment of infrastructural APP resources.
+
+The target node is said to receive connection information from the source node during the configuration (or construction) phase of its life cycle.
+
+The following Data definition of a BEAM resource shows the properties required to describe and establish such a connection, always defined between the hardware nodes.
+
+    resource "amenesik_beam" "small" { 
+      ...
+    	data     = [
+        { path = "node.1.type" value = "Compute" }
+        { path = "node.2.type" value = "Database" }
+        { path = "node.3.type" value = "Compute" }
+        { path = "node.4.type" value = "WebServer" }
+    		{
+    		path = "relation . node . 1 . hostname"
+    		value = "node.3"
+    		}      
+      ]
+    }
+
+In this example the Compute node of the WebServer configuration will receive the hostname of the Compute node of the Database configuration.
+
+In most cases, the subject of the relationship will be the hostname of the source. 
+
+In certain cases, especially concerning automation of load balancing scenarios, it is necessary that the subject of the relationship be the contract identifier of the source, facilitating replication of the source, by the target, in accordance with percieved load.
+
+### Tags 
+Tags that are used to define service deployment conditions and other metadata, may be defined through the BEAM resource in terms of theier name and value.
+
+The following tags are currently defined for BEAM documents, and other than the Probe tag, should all be self-explanatory:
+
+- Title : defines the title of the BEAM resource
+- SubTitle : defines the sub title of the BEAM resource
+- Author : defines the author of the BEAM resource
+- Version : defines the version of the BEAM resource
+- Date : defines the date of creation or modification of the document
+- Account : defines the default, or global, provisioning account
+- Provider : defines the default, or global, provisioning category
+- Zone : defines the default, or global, provisioning zone
+- Domain : defines the default, or global, domain name
+- Probe : defines the name of an Amenesik Enterprise Cloud Probe definition.
+
+The following configuration document snippet shows an example of tag definitions.
+
+    resource "amenesik_beam" "small" { 
+      ...
+    	data     = [
+        ...
+        { path = tag.Title" value = "My Document Title" }
+        { path = "tag.Author" value = "The document Author name" }
+        { path = "tag.Probe" value = "memory-free" }
+        ...
+      ]
+    }
+
+### Types
+The Node types that are used to define the behaviour of software layer nodes may be defined through the BEAM resource in terms of the following properties:
+
+- name : the terminal name portion of the node type.
+- create : the public, web fetchable action script to be fetched and launched when a node is created.
+- start : the public, web fetchable action script to be fetched and launched when a node is started.
+- stop : the public, web fetchable action script, to be fetched and launched when a node is stopped.
+- save : the public, web fetchable action script, to be fetched and launched when a node is saved.
+- delete : the public, web fetchable action script, to be fetched and launched when a node is deleted.
+
+### Imports
+Node types may be imported instead of being defined in BEAM documents. This encourages reusability.
+
+The following configuration document snippet shows an example of tag definitions.
+
+    resource "amenesik_beam" "small" { 
+      ...
+    	data     = [
+        ...
+        { path = import" value = "Database" }
+        { path = "import" value = "WebServer" }
+        ...
+      ]
+    }
+
+## Complete Example
+The following configuration document shows the creation of a complex multi layer load balenced web application scenario with 6 application servers and two database servers.
+
+    resource "amenesik_beam" "mybeam" {
+            template = "template"
+            program  = "mybeam-template"
+            domain   = "openabal.com"
+            region   = "any"
+            category = "any"
+            param    = "none"
+            data     = [
+                    # beam document tags
+                    { path = "tag.Title", value="My New Beam Document" },
+                    { path = "tag.SubTitle", value="Generated by Terraform" },
+                    { path = "tag.Author", value="Iain James Marshall" },
+                    { path = "tag.Probe", value="memory-free" },
+                    { path = "tag.Probe", value="disk-free" },
+    
+                    # beam document node: database hardware
+                    { path = "node.1.name", value = "dbhwa" },
+                    { path = "node.1.type", value = "Compute" },
+                    { path = "node.1.host.num_cpus", value = "8" },
+                    { path = "node.1.host.mem_size", value = "32G" },
+                    { path = "node.1.host.disk_size", value = "i110G" },
+                    { path = "node.1.os.distribution", value = "UBUNTU" },
+                    { path = "node.1.os.version", value = "20.04" },
+    
+                    # beam document node: database software
+                    { path = "node.2.name", value = "dbswa" },
+                    { path = "node.2.base", value = "dbhwa" },
+                    { path = "node.2.type", value = "Database" },
+                    { path = "node.2.db.HOST", value = "localhost:3306:1" },
+                    { path = "node.2.db.USER", value = "myuser" },
+                    { path = "node.2.db.PASS", value = "mypass" },
+                    { path = "node.2.db.BASE", value = "mybase" },
+    
+                    # beam document node : duplicate database hardware
+                    { path = "copy.node", "value" = "dbhwa" },
+                    { path = "node.last.name", value = "dbhwb" },
+    
+                    # beam document node: duplicate database software
+                    { path = "copy.node", "value" = "dbswa" },
+                    { path = "node.last.name", value = "dbswb" },
+                    { path = "node.last.base", value = "dbhwb" },
+    
+                    # beam document node: web server hardware
+                    { path = "copy.node", "value" = "dbhwa" },
+                    { path = "node.last.name", value = "wshwa" },
+    
+                    # beam document node: web server software
+                    { path = "copy.node", "value" = "dbswa" },
+                    { path = "node.last.name", value = "wsswa" },
+                    { path = "node.last.base", value = "wshwa" },
+                    { path = "node.last.type", value = "WebServer" },
+    
+                    # beam document node: web server hardware copy
+                    { path = "copy.node", "value" = "wshwa" },
+                    { path = "node.last.name", value = "wshwb" },
+    
+                    # beam document node: web server software copy
+                    { path = "copy.node", "value" = "wsswa" },
+                    { path = "node.last.name", value = "wsswb" },
+                    { path = "node.last.base", value = "wshwb" },
+    
+                    # beam document node: web server hardware copy
+                    { path = "copy.node", "value" = "wshwa" },
+                    { path = "node.last.name", value = "wshwc" },
+    
+                    # beam document nodes 6a : web server software copy
+                    { path = "copy.node", "value" = "wsswa" },
+                    { path = "node.last.name", value = "wsswc" },
+                    { path = "node.last.base", value = "wshwc" },
+    
+                    # beam document node: web server hardware copy
+                    { path = "copy.node", "value" = "wshwa" },
+                    { path = "node.last.name", value = "wshwd" },
+    
+                    # beam document node: web server software copy
+                    { path = "copy.node", "value" = "wsswa" },
+                    { path = "node.last.name", value = "wsswd" },
+    
+                    # beam document node: load balancer hardware
+                    { path = "copy.node", "value" = "dbhw" },
+                    { path = "node.last.name", value = "lbhwa" },
+    
+                    # beam document node: load balancer software
+                    { path = "copy.node", "value" = "dbsw" },
+                    { path = "node.last.name", value = "lbswa" },
+                    { path = "node.last.base", value = "lbhwa" },
+                    { path = "node.last.type", value = "LoadBalancer" },
+    
+                    # beam document node: web server hardware copy
+                    { path = "copy.node", "value" = "wshwa" },
+                    { path = "node.last.name", value = "wshwe" },
+    
+                    # beam document node: web server software copy
+                    { path = "copy.node", "value" = "wsswa" },
+                    { path = "node.last.name", value = "wsswe" },
+                    { path = "node.last.base", value = "wshwe" },
+    
+                    # beam document node: web server hardware copy
+                    { path = "copy.node", "value" = "wshwa" },
+                    { path = "node.last.name", value = "wshwf" },
+    
+                    # beam document node: web server software copy
+                    { path = "copy.node", "value" = "wsswa" },
+                    { path = "node.last.name", value = "wsswf" },
+                    { path = "node.last.base", value = "wshwf" },
+    
+                    # beam document node: load balancer hardware copy
+                    { path = "copy.node", "value" = "lbhwa" },
+                    { path = "node.last.name", value = "lbhwb" },
+    
+                    # beam document node: load balancer software copy
+                    { path = "copy.node", "value" = "lbswa" },
+                    { path = "node.last.name", value = "lbswb" },
+                    { path = "node.last.base", value = "lbhwb" },
+                    
+                    # beam document node: load balancer hardware copy
+                    { path = "copy.node", "value" = "lbhwa" },
+                    { path = "node.last.name", value = "lbhwc" },
+    
+                    # beam document node: load balancer software copy
+                    { path = "copy.node", "value" = "lbswa" },
+                    { path = "node.last.name", value = "lbswc" },
+                    { path = "node.last.base", value = "lbhwc" },
+    
+                    # beam document relations
+                    { path = "relation.node.dbhwa.hostname", value="node.wshwa" },
+                    { path = "relation.node.dbhwa.hostname", value="node.wshwb" },
+                    { path = "relation.node.dbhwa.hostname", value="node.wshwc" },
+                    { path = "relation.node.dbhwa.hostname", value="node.wshwd" },
+                    { path = "relation.node.dbhwa.hostname", value="node.wshwe" },
+                    { path = "relation.node.dbhwa.hostname", value="node.wshwf" },
+                    { path = "relation.node.dbhwb.hostname", value="node.wshwa" },
+                    { path = "relation.node.dbhwb.hostname", value="node.wshwb" },
+                    { path = "relation.node.dbhwb.hostname", value="node.wshwc" },
+                    { path = "relation.node.dbhwb.hostname", value="node.wshwd" },
+                    { path = "relation.node.dbhwb.hostname", value="node.wshwe" },
+                    { path = "relation.node.dbhwb.hostname", value="node.wshwf" },
+                    { path = "relation.node.wshwa.hostname", value="node.lbhwa" },
+                    { path = "relation.node.wshwb.hostname", value="node.lbhwa" },
+                    { path = "relation.node.wshwc.hostname", value="node.lbhwa" },
+                    { path = "relation.node.wshwd.hostname", value="node.lbhwa" },
+                    { path = "relation.node.wshwe.hostname", value="node.lbhwa" },
+                    { path = "relation.node.wshwf.hostname", value="node.lbhwa" },
+                    { path = "relation.node.wshwa.hostname", value="node.lbhwb" },
+                    { path = "relation.node.wshwb.hostname", value="node.lbhwb" },
+                    { path = "relation.node.wshwc.hostname", value="node.lbhwb" },
+                    { path = "relation.node.wshwd.hostname", value="node.lbhwb" },
+                    { path = "relation.node.wshwe.hostname", value="node.lbhwb" },
+                    { path = "relation.node.wshwf.hostname", value="node.lbhwb" },
+                    { path = "relation.node.lbhwa.hostname", value="node.lbhwc" },
+                    { path = "relation.node.lbhwb.hostname", value="node.lbhwc" },
+            ]
+    }
+
+The processing of this BEAM resource using Terraform Apply would result in the following BEAM Topology.
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/371fddb9-2b96-420c-bd9b-4d0909f2466e" />
 
 
 
 
-
-  
 
