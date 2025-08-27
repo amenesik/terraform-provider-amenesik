@@ -51,9 +51,9 @@ An simple example of the use of this type of resource can be seen in the sample 
 The terraform section indicates the required use of the involved providers, as is customary for Terraform configuration documents, in this case the amenesik provider.
 
 The provider section defines the configuration values required for the Amenesik provider:
-- host : the domain name of the Amenesik Enterprise Cloud platform, usually "phoenix.amenesik.com" or "mycompany.amenesik.com".
-- account : the provisioning account name on the corresponding Amenesik Enterprise Cloud platform.
-- apikey : the API KEY associated with the provisioning account. This is a sensitive value and should be not be written in plain text on configuration documents.
+- host : The domain name of the Amenesik Enterprise Cloud platform, usually "phoenix.amenesik.com" or "mycompany.amenesik.com".
+- account : The provisioning account name on the corresponding Amenesik Enterprise Cloud platform.
+- apikey : The API KEY associated with the provisioning account. This is a sensitive value and should be not be written in plain text on configuration documents.
 
 The variable ace_api_key allows the sensitive string value of the amenesik provider API KEY to be defined through the Terraform variable management mechanisms, including environment variables, terraform command line switches and prompted user input values.
 
