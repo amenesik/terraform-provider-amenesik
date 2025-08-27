@@ -5,11 +5,11 @@ This provider plugin for the Terraform platform allows deployment and life-cycle
 ## Resources
 The Amenesik Terraform Provider plugin describes the following resources:
 
-- App : These resource types are used to manage complete application deployment instances
+- App : These resource types are used to manage complete application deployment instances.
 - Beam : These resource types are used to manage Basmati Enhanced Application Model descriptions that are used for the description of deployment details for the preceding App resource.
 
 ## App
-This resource type will be used to manage the deployment instances of your complex, multi-cloud, business application configurations.
+This resource type will be used to manage the deployment instances of your complex, multi-cloud business application configurations.
 
 An simple example of the use of this type of resource can be seen in the sample Terraform configuration document.
 
