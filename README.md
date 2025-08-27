@@ -528,6 +528,10 @@ The following configuration document shows the creation of a complex multi layer
             ]
     }
 
+The processing of this BEAM resource using Terraform Apply would result in the following BEAM Topology.
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/371fddb9-2b96-420c-bd9b-4d0909f2466e" />
+
 
 
 
