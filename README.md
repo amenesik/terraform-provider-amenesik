@@ -9,7 +9,7 @@ The Amenesik Terraform Provider plugin describes the following resources:
 - Beam : These resource types are used to manage Basmati Enhanced Application Model descriptions that are used for the description of deployment details for the preceding App resource.
 
 ## App
-This resource type will be used to manage the deployment instances of your complex, multi-cloud business application configurations.
+This resource type will be used to manage the deployment instances of Your complex, multi-cloud business application configurations.
 
 An simple example of the use of this type of resource can be seen in the sample Terraform configuration document.
 
@@ -50,8 +50,8 @@ An simple example of the use of this type of resource can be seen in the sample 
 
 The terraform section indicates the required use of the involved providers, as is customary for Terraform configuration documents, in this case the amenesik provider.
 
-The provider section defines the configuration values required for the amenesik provider:
-- host : the domain name of the Amenesik Enterprise Cloud platform, usually "phoenix.amenesik.com" or "mycompany.amenesik.com"
+The provider section defines the configuration values required for the Amenesik provider:
+- host : the domain name of the Amenesik Enterprise Cloud platform, usually "phoenix.amenesik.com" or "mycompany.amenesik.com".
 - account : the provisioning account name on the corresponding Amenesik Enterprise Cloud platform.
 - apikey : the API KEY associated with the provisioning account. This is a sensitive value and should be not be written in plain text on configuration documents.
 
@@ -61,7 +61,7 @@ The resource section provides the values for the required parameters of an amene
 - template: The value of this property indicates the name of the BEAM document describing the details of the application configuration.
 - program: The value of this property indicates the name of the application instance. It will be used in conjunction with the template name for the preparation of the instance specific derivation of the template document. It will also be used in conjunction with the value of the domain property in the composition of the fully quallified endpoint domain name.
 - domain: The value of this property provides the domain name used in conjunction with the preceding program property for the composition of the fully quallified endpoint domain name.
-- category: The value of this property indicates the name of the Amenesik Enterprise Cloud service provisioning type.  The property may be either a single quoted value, such as "amazonec2", or a quoted, comma separated, square braced list of alternative provisioning categories, such as "[amazonec2,googlecompute,windowsazure]". In the first case a single application state will result. In the second instance three alternative application states will be created, one for each of the specified provisioning types, but only the first will actually be started. The other two, initially idle states,  will provide alternative application fail-over states, that will be deployed and or released, as required, in response to the eventual reception, by the application controller, of "change" and "revert" action events, issued as a result of critical failure detection by the life cycle management of the Amenesik Cloud Engine.  
+- category: The value of this property indicates the name of the Amenesik Enterprise Cloud service provisioning type.  The property may be either a single quoted value, such as "amazonec2", or a quoted, comma separated, square braced list of alternative provisioning categories, such as "[amazonec2,googlecompute,windowsazure]". In the first case a single application state will result. In the second instance three alternative application states will be created, one for each of the specified provisioning types, but only the first will actually be started. The other two, initially idle states,  will provide alternative application fail-over states. That will be deployed and or released, as required, in response to the eventual reception, by the application controller, of "change" and "revert" action events. That are issued as a result of critical failure detection by the life cycle management of the Amenesik Cloud Engine.  
 - region: The value of this property indicates the name of the region and will be used in conjunction with the category property value for cloud provider region selection. As for the preceding "category" property, this property may also be either a single quoted value, such as "france", or a quoted, comma separated, square braced list of alternative provisioning regions, such as "[france,germany,italy]". In the first case a single application state will result. In the second instance, three alternative application states will be created, one for each of the specified provisioning regions, with identical subsequent behaviour as described for multiple provisioning categories. The category and region properties may both specify multiple values, in which case the corresponding ordered combinations will be used. For example, with category set to "[a,b]" and region set = "[c,d]" then two application states would be created, one for category a in region c, and one for category b in region d.
 - param: The value of this property allows optional application specific parameters to be passed to the application instance during its startup.
 
@@ -95,8 +95,8 @@ The Topology Template comprises the collection of Node Templates describing the 
 The Topology Template also comprises an optional collection of Relationship Templates describing the heirarchy of the Nodes.
 
 Node Templates may be of the following types:
-- Hardware nodes describing machines
-- Software nodes describing software layers and configurations to be applied to Hardware nodes.
+- Hardware nodes describing machines,
+- Software nodes describing software layers and configurations to be applied to Hardware nodes,
 - Service nodes performing service oriented operations on behalf of any of the other node types.
 
 The amenesik terraform provider BEAM resource type subsequently allows the definition, creation, management and destruction of BEAM documents.
@@ -106,10 +106,10 @@ A example of a complex Topology Template, described by a single BEAM document, a
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/774c4b9a-b5a5-4e85-8f24-6f5538fe6d6e" />
 
 This complex, yet concrete example, describes the deployment, configuration and interconnection of:
-- twelve virtual machine nodes in one geographical region,
-- seven virtual machine nodes in a secondary geographical region,
-- accessible by both regional entry points,
-- and balanced by a global traffic manager service instance.
+- Twelve virtual machine nodes in one geographical region,
+- Seven virtual machine nodes in a secondary geographical region,
+- Accessible by both regional entry points,
+- And balanced by a global traffic manager service instance.
 
 ### Example
 The following Terraform configuration file shows a simple example of a BEAM resource.
@@ -145,7 +145,7 @@ The following Terraform configuration file shows a simple example of a BEAM reso
     	]
     }
 
-The above example shows two BEAM (TOSCA) nodes, the first a hardware node of type Compute, and a software node, of type Database, that  uses the hardware Compute node as its base.
+The above example shows two BEAM (TOSCA) nodes, the first a hardware node of type Compute, the second a software node of type Database. The second uses the hardware Compute node as its base.
 
 This can be extended further, to produce two derived templates of differing infrastructure dimensions.
 
@@ -217,48 +217,48 @@ A Data Path must be defined with respect to one of these three document roots or
 In the general syntax above, the term 'identifier' may be a number of the name of the node or probe. Afte the use of the 'copy' operation the term 'last' may be used to address the most recently created node.
 
 The corresponding value will depend on the nature of the path.
-- for nodes : the value will be the required value of the property.
-- for relations : the value will be the required target node of the relation.
-- for probes : the value will be the required value of the property.
+- for nodes : The value will be the required value of the property.
+- for relations : The value will be the required target node of the relation.
+- for probes : The value will be the required value of the property.
 
 #### Nodes
 The following property names exist for all node paths outside of any capability extensions.
 
-- name : the name of the node
-- type : the usage type of the node as Compute or other Software layer definitions.
-- base : the parent node of a node layering collection, where the hardware node provides a base for a subsequent chain of software node layers. 
+- name : The name of the node.
+- type : The usage type of the node as Compute or other Software layer definitions.
+- base : The parent node of a node layering collection, where the hardware node provides a base for a subsequent chain of software node layers. 
 
 The optional capability of a node path expression may be one of the following.
 
-- host : the collection of host properties of the Compute node type.
-- os : the collection of operating system properties of the Compute node type.
-- other capability values may be used for node type specific capability parameters.
+- host : The collection of host properties of the Compute node type.
+- os : The collection of operating system properties of the Compute node type.
+- Other capability values may be used for node type specific capability parameters.
 
 The host capability defines the following properties
 
-- num_cpus : the number of cores or virtual cpus for the Compute node.
-- mem_size : the size of the memory suffixed by M or G
-- disk_size : the size of the disk, suffixed by M, G or T
-- volume : the name of an attached volume
-- entry : the entry point description
-- hostname : the fully qualified host and domain name
-- provider : the provisioning category, when specific to a node
-- region : the provisioning region when specific to a node
-- vlan : the vlan to which the node should be attached
-- tcp_port : a TCP port to be opened in the firewall or security group
-- udp_port : a UDP port to be opened in the firewall or security group
-- tcp_range : a dash or comma separated range of TCP ports to be opened in the firewall or security group
-- udp_range : a dash or comma separated range of UDP ports to be opened in the firewall or security group
-- protocol : the network protocol
-- cluster : the name of the cluster for a container compute node
-- namespace : the name of the namespace for a container compute node
+- num_cpus : The number of cores or virtual cpus for the Compute node,
+- mem_size : The size of the memory suffixed by M or G,
+- disk_size : The size of the disk, suffixed by M, G or T,
+- volume : The name of an attached volume,
+- entry : The entry point description,
+- hostname : The fully qualified host and domain name,
+- provider : The provisioning category, when specific to a node,
+- region : The provisioning region when specific to a node,
+- vlan : The vlan to which the node should be attached,
+- tcp_port : A TCP port to be opened in the firewall or security group,
+- udp_port : A UDP port to be opened in the firewall or security group,
+- tcp_range : A dash or comma separated range of TCP ports to be opened in the firewall or security group,
+- udp_range : A dash or comma separated range of UDP ports to be opened in the firewall or security group,
+- protocol : The network protocol,
+- cluster : The name of the cluster for a container compute node,
+- namespace : The name of the namespace for a container compute node.
  
-The os capability defines the following properties
+The OS capability defines the following properties
 
-- architecture : describes the hardware architecture such as x86_64
-- type : indicates the operating system family as linux or windows
-- distribution : the name of the distribution as WINDOWS, UBUNTU or RHEL
-- version : the version of the specified distribution such as 20.04 or 9
+- architecture : Describes the hardware architecture such as x86_64,
+- type : Indicates the operating system family as linux or windows,
+- distribution : The name of the distribution as WINDOWS, UBUNTU or RHEL,
+- version : The version of the specified distribution such as 20.04 or 9.
 
 The properties of the software node types are type specific and require consultation of the product capabilites on the amenesik web site.
 
@@ -276,19 +276,19 @@ The following structure describes the properties that would be required for a ty
 - node.2.capability.property1
 - node.2.capability.propertyN
 
-In real world situations a a large number of nodes would be defined each with their own specific collections of capabilities and their associated properties.
+In real world situations a large number of nodes would be defined each with their own specific collections of capabilities and their associated properties.
 
 The complex example shown above, requires 22 hardware (Compute) nodes, 19 software nodes of four different classes (LDAP, TOMCAT, APACHE, HAPROXY) and roughly 50 relations. In addition a variety of probes would be required for both hardware and software operation and failover monitoring.  The resulting BEAM document would naturally be correspondingly complex.
 
 ### Probes
 The following properties are defined for the monitoring probes.
 
-- metric : the definition of the type of information, its collection frequency and its means of collection. These may be defined per account by the Amenesik Enterprise Cloud.
-- condition : the nature of the comparaison with the threshold value (eq, gr, ls, ge, le, ne)
-- threshold : the threshold value which when reached requires remediative "penalty" action to be engaged.
-- type : the nature of the remediation action invocation (one of OCCISCRIPT, BASH, PYTHON)
-- nature : the purpose or nature of the action (one of penalty, reward, both). When "reward" or "both" then the actio will be engaged before threshold is reached.
-- behaviour : the name of the OCCI, BASH or PYTHON script describing the subsequent action.
+- metric : The definition of the type of information, its collection frequency and its means of collection. These may be defined per account by the Amenesik Enterprise Cloud.
+- condition : The nature of the comparaison with the threshold value (eq, gr, ls, ge, le, ne).
+- threshold : The threshold value which when reached requires remediative "penalty" action to be engaged.
+- type : The nature of the remediation action invocation (one of OCCISCRIPT, BASH, PYTHON).
+- nature : The purpose or nature of the action (one of penalty, reward, both). When "reward" or "both" then the actio will be engaged before threshold is reached.
+- behaviour : The name of the OCCI, BASH or PYTHON script describing the subsequent action.
 
 ### Relations
 A relation is required to be defined when a secondary (target) node construction (hardware and software elements) requires autotamtion of its connection to a primary (source) node construction (hardware and software elements) during the deployment of infrastructural APP resources.
@@ -322,16 +322,16 @@ Tags that are used to define service deployment conditions and other metadata, m
 
 The following tags are currently defined for BEAM documents, and other than the Probe tag, should all be self-explanatory:
 
-- Title : defines the title of the BEAM resource
-- SubTitle : defines the sub title of the BEAM resource
-- Author : defines the author of the BEAM resource
-- Version : defines the version of the BEAM resource
-- Date : defines the date of creation or modification of the document
-- Account : defines the default, or global, provisioning account
-- Provider : defines the default, or global, provisioning category
-- Zone : defines the default, or global, provisioning zone
-- Domain : defines the default, or global, domain name
-- Probe : defines the name of an Amenesik Enterprise Cloud Probe definition.
+- Title : Defines the title of the BEAM resource,
+- SubTitle : Defines the sub title of the BEAM resource,
+- Author : Defines the author of the BEAM resource,
+- Version : Defines the version of the BEAM resource,
+- Date : Defines the date of creation or modification of the document,
+- Account : Defines the default, or global, provisioning account,
+- Provider : Defines the default, or global, provisioning category,
+- Zone : Defines the default, or global, provisioning zone,
+- Domain : Defines the default, or global, domain name,
+- Probe : Defines the name of an Amenesik Enterprise Cloud Probe definition.
 
 The following configuration document snippet shows an example of tag definitions.
 
@@ -349,12 +349,12 @@ The following configuration document snippet shows an example of tag definitions
 ### Types
 The Node types that are used to define the behaviour of software layer nodes may be defined through the BEAM resource in terms of the following properties:
 
-- name : the terminal name portion of the node type.
-- create : the public, web fetchable action script to be fetched and launched when a node is created.
-- start : the public, web fetchable action script to be fetched and launched when a node is started.
-- stop : the public, web fetchable action script, to be fetched and launched when a node is stopped.
-- save : the public, web fetchable action script, to be fetched and launched when a node is saved.
-- delete : the public, web fetchable action script, to be fetched and launched when a node is deleted.
+- name : The terminal name portion of the node type.
+- create : The public, web fetchable action script to be fetched and launched when a node is created.
+- start : The public, web fetchable action script to be fetched and launched when a node is started.
+- stop : The public, web fetchable action script, to be fetched and launched when a node is stopped.
+- save : The public, web fetchable action script, to be fetched and launched when a node is saved.
+- delete : The public, web fetchable action script, to be fetched and launched when a node is deleted.
 
 ### Imports
 Node types may be imported instead of being defined in BEAM documents. This encourages reusability.
