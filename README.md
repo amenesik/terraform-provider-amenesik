@@ -207,8 +207,12 @@ BEAM documents comprise ordered collections of NODES, RELATIONS and PROBES (a sp
 A Data Path must be defined with respect to one of these three document roots or arrays:
 
 - node . < number > [ . < capability > ] . < property >
-- relation . node . < number >
-- probe . < number > . property
+- relation . node . < number > . [ hostname | contract ]
+- probe . < number > . < property >
+- type . < name > . < property >
+- tag . < name >
+- import
+- copy . node
 
 The corresponding value will depend on the nature of the path.
 - for nodes : the value will be the required value of the property.
@@ -310,3 +314,62 @@ In this example the Compute node of the WebServer configuration will receive the
 In most cases, the subject of the relationship will be the hostname of the source. 
 
 In certain cases, especially concerning automation of load balancing scenarios, it is necessary that the subject of the relationship be the contract identifier of the source, facilitating replication of the source, by the target, in accordance with percieved load.
+
+### Tags 
+Tags that are used to define service deployment conditions and other metadata, may be defined through the BEAM resource in terms of theier name and value.
+
+The following tags are currently defined for BEAM documents, and other than the Probe tag, should all be self-explanatory:
+
+- Title : defines the title of the BEAM resource
+- SubTitle : defines the sub title of the BEAM resource
+- Author : defines the author of the BEAM resource
+- Version : defines the version of the BEAM resource
+- Date : defines the date of creation or modification of the document
+- Account : defines the default, or global, provisioning account
+- Provider : defines the default, or global, provisioning category
+- Zone : defines the default, or global, provisioning zone
+- Domain : defines the default, or global, domain name
+- Probe : defines the name of an Amenesik Enterprise Cloud Probe definition.
+
+The following configuration document snippet shows an example of tag definitions.
+
+    resource "amenesik_beam" "small" { 
+      ...
+    	data     = [
+        ...
+        { path = tag.Title" value = "My Document Title" }
+        { path = "tag.Author" value = "The document Author name" }
+        { path = "tag.Probe" value = "memory-free" }
+        ...
+      ]
+    }
+
+### Types
+The Node types that are used to define the behaviour of software layer nodes may be defined through the BEAM resource in terms of the following properties:
+
+- name : the terminal name portion of the node type.
+- create : the public, web fetchable action script to be fetched and launched when a node is created.
+- start : the public, web fetchable action script to be fetched and launched when a node is started.
+- stop : the public, web fetchable action script, to be fetched and launched when a node is stopped.
+- save : the public, web fetchable action script, to be fetched and launched when a node is saved.
+- delete : the public, web fetchable action script, to be fetched and launched when a node is deleted.
+
+### Imports
+Node types may be imported instead of being defined in BEAM documents. This encourages reusability.
+
+The following configuration document snippet shows an example of tag definitions.
+
+    resource "amenesik_beam" "small" { 
+      ...
+    	data     = [
+        ...
+        { path = import" value = "Database" }
+        { path = "import" value = "WebServer" }
+        ...
+      ]
+    }
+
+
+
+
+
