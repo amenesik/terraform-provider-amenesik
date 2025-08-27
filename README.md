@@ -400,7 +400,7 @@ The following configuration document shows the creation of a complex multi layer
                     { path = "node.1.type", value = "Compute" },
                     { path = "node.1.host.num_cpus", value = "8" },
                     { path = "node.1.host.mem_size", value = "32G" },
-                    { path = "node.1.host.disk_size", value = "i110G" },
+                    { path = "node.1.host.disk_size", value = "110G" },
                     { path = "node.1.os.distribution", value = "UBUNTU" },
                     { path = "node.1.os.version", value = "20.04" },
     
@@ -505,40 +505,50 @@ The following configuration document shows the creation of a complex multi layer
                     { path = "node.last.base", value = "lbhwc" },
     
                     # beam document relations
+
+                    # connection of web servers to database a
                     { path = "relation.node.dbhwa.hostname", value="node.wshwa" },
                     { path = "relation.node.dbhwa.hostname", value="node.wshwb" },
                     { path = "relation.node.dbhwa.hostname", value="node.wshwc" },
                     { path = "relation.node.dbhwa.hostname", value="node.wshwd" },
                     { path = "relation.node.dbhwa.hostname", value="node.wshwe" },
                     { path = "relation.node.dbhwa.hostname", value="node.wshwf" },
+
+                    #connection of web servers to database b
                     { path = "relation.node.dbhwb.hostname", value="node.wshwa" },
                     { path = "relation.node.dbhwb.hostname", value="node.wshwb" },
                     { path = "relation.node.dbhwb.hostname", value="node.wshwc" },
                     { path = "relation.node.dbhwb.hostname", value="node.wshwd" },
                     { path = "relation.node.dbhwb.hostname", value="node.wshwe" },
                     { path = "relation.node.dbhwb.hostname", value="node.wshwf" },
+
+                    # connection of web servers to load balancer a
                     { path = "relation.node.wshwa.hostname", value="node.lbhwa" },
                     { path = "relation.node.wshwb.hostname", value="node.lbhwa" },
                     { path = "relation.node.wshwc.hostname", value="node.lbhwa" },
                     { path = "relation.node.wshwd.hostname", value="node.lbhwa" },
                     { path = "relation.node.wshwe.hostname", value="node.lbhwa" },
                     { path = "relation.node.wshwf.hostname", value="node.lbhwa" },
+
+                    # connection of web servers to load balancer b
                     { path = "relation.node.wshwa.hostname", value="node.lbhwb" },
                     { path = "relation.node.wshwb.hostname", value="node.lbhwb" },
                     { path = "relation.node.wshwc.hostname", value="node.lbhwb" },
                     { path = "relation.node.wshwd.hostname", value="node.lbhwb" },
                     { path = "relation.node.wshwe.hostname", value="node.lbhwb" },
                     { path = "relation.node.wshwf.hostname", value="node.lbhwb" },
+
+                    # connection of load balancers a and b to c
                     { path = "relation.node.lbhwa.hostname", value="node.lbhwc" },
                     { path = "relation.node.lbhwb.hostname", value="node.lbhwc" },
             ]
     }
 
-The processing of this BEAM resource using Terraform Apply would result in the following BEAM Topology.
+The processing of this BEAM resource, using Terraform Apply, would result in the following BEAM Topology being created in the Amenesik Enterprise Cloud.
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/371fddb9-2b96-420c-bd9b-4d0909f2466e" />
 
-
+Naturally the use of Terraform Destroy would delete it from the Amenesik Enterprise Cloud.
 
 
 
