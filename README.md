@@ -1,17 +1,17 @@
 # Terraform Provider Amenesik
 
-This provider plugin for the Terraform platform allows deployment and life-cycle management of complex business management applications workloads through the Multi-Cloud Amenesik Enterprise Cloud Service Federation platform.
+This provider plugin for the Terraform platform allows deployment and life-cycle management of complex business management application workloads through the Multi-Cloud Amenesik Enterprise Cloud Service Federation platform.
 
 ## Resources
 The Amenesik Terraform Provider plugin describes the following resources:
 
 - App : These resource types are used to manage complete application deployment instances
-- Beam : These resource types are used to manage Basmati Enhanced Application Model descriptions that are used for the description of deployment details for the preceding App resource.
+- Beam : These resource types are used to manage Basmati Enhanced Application Model descriptions that are used for the description of the deployment details for the preceding App resource.
 
 ## App
-This resource type will be used to manage the deployment instances of Your complex, multi-cloud business application configurations.
+This resource type will be used to manage the deployment instances of your complex, multi-cloud business application configurations.
 
-An simple example of the use of this type of resource can be seen in the sample Terraform configuration document.
+A simple example of the use of this type of resource can be seen in the sample Terraform configuration document.
 
   
     terraform {
@@ -53,19 +53,19 @@ The terraform section indicates the required use of the involved providers, as i
 The provider section defines the configuration values required for the Amenesik provider:
 - Host : the domain name of the Amenesik Enterprise Cloud platform, usually "phoenix.amenesik.com" or "mycompany.amenesik.com"
 - Account : the provisioning account name on the corresponding Amenesik Enterprise Cloud platform
-- Apikey : The API KEY associated with the provisioning account. This is a sensitive value and should be not be written in plain text on configuration documents.
+- Apikey : The API KEY associated with the provisioning account. This is a sensitive value and should be not be written in plain text in configuration documents.
 
 The variable ace_api_key allows the sensitive string value of the amenesik provider API KEY to be defined through the Terraform variable management mechanisms, including environment variables, terraform command line switches and prompted user input values.
 
-The resource section provides the values for the required parameters of an amenesik provider APP resource:
+The resource section provides the values for the required parameters of a single amenesik provider APP resource:
 
-- Template: The value of this property indicates the name of the BEAM document describing the details of the application configuration.
+- Template: The value of this property indicates the name of the BEAM resource describing the details of the application configuration.
   
 - Program: The value of this property indicates the name of the application instance. It will be used in conjunction with the template name for the preparation of the instance specific derivation of the template document. It will also be used in conjunction with the value of the domain property in the composition of the fully quallified endpoint domain name.
   
 - Domain: The value of this property provides the domain name used in conjunction with the preceding program property for the composition of the fully quallified endpoint domain name.
   
-- Category: The value of this property indicates the name of the Amenesik Enterprise Cloud service provisioning type.  The property may be either a single quoted value, such as "amazonec2", or a quoted, comma separated, square braced list of alternative provisioning categories, such as "[amazonec2,googlecompute,windowsazure]". In the first case a single application state will result. In the second instance three alternative application states will be created, one for each of the specified provisioning types, but only the first will actually be started. The other two, initially idle states,  will provide alternative application fail-over states. That will be deployed and or released, as required, in response to the eventual reception, by the application controller, of "change" and "revert" action events. That are issued as a result of critical failure detection by the life cycle management of the Amenesik Cloud Engine.
+- Category: The value of this property indicates the name of the Amenesik Enterprise Cloud service provisioning type.  The property may be either a single quoted value, such as "amazonec2", or a quoted, comma separated, square braced list of alternative provisioning categories, such as "[amazonec2,googlecompute,windowsazure]". In the first case a single application state will result. In the second instance three alternative application states will be created, one for each of the specified provisioning types, but only the first will actually be started. The other two, initially idle states,  will provide alternative application fail-over states. They will be deployed and or released, as required, in response to the eventual reception, by the application controller, of "change" and "revert" action events. These events are issued as a result of critical failure detection by the life cycle management of the Amenesik Cloud Engine.
     
 - Region: The value of this property indicates the name of the region and will be used in conjunction with the category property value for cloud provider region selection. As for the preceding "category" property, this property may also be either a single quoted value, such as "france", or a quoted, comma separated, square braced list of alternative provisioning regions, such as "[france,germany,italy]". In the first case a single application state will result. In the second instance, three alternative application states will be created, one for each of the specified provisioning regions, with identical subsequent behaviour as described for multiple provisioning categories. The category and region properties may both specify multiple values, in which case the corresponding ordered combinations will be used. For example, with category set to "[a,b]" and region set = "[c,d]" then two application states would be created, one for category a in region c, and one for category b in region d.
   
@@ -82,7 +82,7 @@ Management of the deployment of a suitably defined APP instance would be perform
     $ terraform destroy 
     ...
 
-These command must be launched from the folder containing the application configuration file, unless the terraform directory change command line switch is specified.
+These commands must be launched from the folder containing the application configuration file, unless the terraform directory change command line switch is specified.
 
 ## Beam
 This resource type will be used to manage the BEAM description documents of complex, multi-cloud business applications.
@@ -98,14 +98,14 @@ The Service Template comprises the collection of BEAM Tag values and the applica
 
 The Topology Template comprises the collection of Node Templates describing the nature, composition and requirements of the service nodes needed by the application.
 
-The Topology Template also comprises an optional collection of Relationship Templates describing the heirarchy of the Nodes.
+The Topology Template also comprises an optional collection of Relationship Templates describing the heirarchy and interconnection of the Nodes.
 
 Node Templates may be of the following types:
 - Hardware nodes describing machines
 - Software nodes describing software layers and configurations to be applied to Hardware nodes
 - Service nodes performing service oriented operations on behalf of any of the other node types
 
-The amenesik terraform provider BEAM resource type subsequently allows the definition, creation, management and destruction of BEAM documents.
+The amenesik terraform provider's BEAM resource type subsequently allows the definition, creation, management and destruction of BEAM documents.
 
 A example of a complex Topology Template, described by a single BEAM document, as managed by the Amenesik Enterprise Cloud, is shown below. The links between the nodes represent the information provided by the collection of Relationship Templates. 
 
@@ -205,12 +205,12 @@ Secondly a large quad-cored cpu with 16G or memory and 100G of disk.
       ]
     }
 
-From the above examples it should be noted that the data array of the BEAM resource describes the properties and their values of the required BEAM document.
+From the above examples it should be noted that the data array of the BEAM resource describes the properties and their values of the BEAM document.
 
 ### Syntax
-BEAM documents comprise ordered collections of NODES, RELATIONS and PROBES (a specialisation of the node).
+Conceptually, BEAM documents comprise ordered collections of TAGS, TYPES, IMPORTS, NODES, RELATIONS and PROBES (a specialisation of the node).
 
-A Data Path must be defined with respect to one of these three document roots or arrays:
+A Data Path must be defined with respect to one of these document roots or arrays:
 
 - node . < identifier > [ . < capability > ] . < property >
 - relation . node . < number > . [ hostname | contract ]
@@ -218,30 +218,34 @@ A Data Path must be defined with respect to one of these three document roots or
 - type . < name > . < property >
 - tag . < name >
 - import
+
+In addtition, the data path also allows replication of preceding nodes and probes using the following operations:
+
 - copy . node
 - copy . probe
 
-In the general syntax above, the term 'identifier' may be a number of the name of the node or probe. Afte the use of the 'copy' operation the term 'last' may be used to address the most recently created node.
+In the general syntax above, the term 'identifier' may be either a number or the name of the node or probe. After the use of the 'copy' operation the term 'last' may be used to address the most recently created node.
 
 The corresponding value will depend on the nature of the path.
-- For nodes : The value will be the required value of the property
-- For relations : The value will be the required target node of the relation
-- For probes : The value will be the required value of the property
+- For nodes : The value will provide the value required to be set for the property of the node.
+- For relations : The value will be the identification of required target node of the relation
+- For probes : The value will provide the value required to be set for the property of the probe.
 
 #### Nodes
-The following property names exist for all node paths outside of any capability extensions.
+The following property names exist for all node paths, outside of any capability extensions.
 
 - Name : the name of the node
-- Type : the usage type of the node as Compute or other Software layer definitions
+- Type : the usage type of the node as Compute or other Software layer definitions.
+  Description : a human readable text string describing the purpose of the node.
 - Base : the parent node of a node layering collection, where the hardware node provides a base for a subsequent chain of software node layers. 
 
 The optional capability of a node path expression may be one of the following.
 
 - Host : the collection of host properties of the Compute node type
 - Os : the collection of operating system properties of the Compute node type
-- Other capability values may be used for node type specific capability parameters
+- Other capability values may be used for the node type specific capability parameters of software node configurations.
 
-The host capability defines the following properties
+The host capability, of the Compute node type, defines the following properties
 
 - Num_cpus : the number of cores or virtual cpus for the Compute node
 - Mem_size : the size of the memory suffixed by M or G
@@ -260,14 +264,14 @@ The host capability defines the following properties
 - Cluster : the name of the cluster for a container compute node
 - Namespace : the name of the namespace for a container compute node
  
-The OS capability defines the following properties
+The OS capability, of the Compute node type, defines the following properties
 
 - Architecture : describes the hardware architecture such as x86_64
 - Type : indicates the operating system family as linux or windows,
 - Distribution : the name of the distribution as WINDOWS, UBUNTU or RHEL
 - Version : the version of the specified distribution such as 20.04 or 9
 
-The properties of the software node types are type specific and require consultation of the product capabilites on the amenesik web site.
+The properties of the software node types are "type specific" and require consultation of the product capabilites on the amenesik web site.
 
 The following structure describes the properties that would be required for a typical combination of hardware and software nodes
 
@@ -285,7 +289,7 @@ The following structure describes the properties that would be required for a ty
 
 In real world situations a large number of nodes would be defined each with their own specific collections of capabilities and their associated properties.
 
-The complex example shown above, requires 22 hardware (Compute) nodes, 19 software nodes of four different classes (LDAP, TOMCAT, APACHE, HAPROXY) and roughly 50 relations. In addition a variety of probes would be required for both hardware and software operation and failover monitoring.  The resulting BEAM document would naturally be correspondingly complex.
+The complex example shown above, requires 22 hardware (Compute) nodes, 19 software nodes of four different classes (LDAP, TOMCAT, APACHE, HAPROXY) and roughly 50 relations. In addition, a variety of probes would be required for both hardware and software operation and failover monitoring.  The resulting BEAM document would naturally be correspondingly complex.
 
 ### Probes
 The following properties are defined for the monitoring probes.
@@ -297,6 +301,8 @@ The following properties are defined for the monitoring probes.
 - Type : the nature of the remediation action invocation (one of OCCISCRIPT, BASH, PYTHON)
 - Nature : the purpose or nature of the action (one of penalty, reward, both). When "reward" or "both" then the actio will be engaged before threshold is reached.
 - Behaviour : the name of the OCCI, BASH or PYTHON script describing the subsequent action
+
+Probes are attached to hardware nodes either implicitly through the collection of probes defined in the Tag section, or explicitely by the collection of probes defined as requirements of a node, or a combination of both.
 
 ### Relations
 A relation is required to be defined when a secondary (target) node construction (hardware and software elements) requires autotamtion of its connection to a primary (source) node construction (hardware and software elements) during the deployment of infrastructural APP resources.
@@ -319,16 +325,16 @@ The following Data definition of a BEAM resource shows the properties required t
       ]
     }
 
-In this example the Compute node of the WebServer configuration will receive the hostname of the Compute node of the Database configuration.
+In this example the Compute node of the WebServer node of the configuration will receive the hostname of the Compute node of the Database node of the configuration.
 
 In most cases, the subject of the relationship will be the hostname of the source. 
 
-In certain cases, especially concerning automation of load balancing scenarios, it is necessary that the subject of the relationship be the contract identifier of the source, facilitating replication of the source, by the target, in accordance with percieved load.
+In certain cases, especially concerning automation of load balancing scenarios, it is necessary that the subject of the relationship be the contract identifier of the source, facilitating replication of the source, by the target, in accordance with encountered real time load.
 
 ### Tags 
-Tags that are used to define service deployment conditions and other metadata, may be defined through the BEAM resource in terms of theier name and value.
+Tags are used to define service deployment conditions and other metadata and are defined for a BEAM resource in terms of theier name and value.
 
-The following tags are currently defined for BEAM documents, and other than the Probe tag, should all be self-explanatory:
+The following tags are currently availabe for use in BEAM documents, and other than the Probe tag, should all be self-explanatory:
 
 - Title : defines the title of the BEAM resource
 - SubTitle : defines the sub title of the BEAM resource
@@ -355,20 +361,23 @@ The following configuration document snippet shows an example of tag definitions
     }
 
 ### Types
-The Node types that are used to define the behaviour of software layer nodes may be defined through the BEAM resource in terms of the following properties:
+The Node types that are used to define the behaviour of software layer nodes may be defined locally for a  BEAM resource in terms of the following properties:
 
-- Name : the terminal name portion of the node type
+- Name : the terminal name portion of the node type ( will be prefixed by tosca-nodes- by the Amenesik Enterprise Cloud BEAM resource processor )
 - Create : the public, web fetchable action script to be fetched and launched when a node is created
 - Start : the public, web fetchable action script to be fetched and launched when a node is started
 - Stop : the public, web fetchable action script, to be fetched and launched when a node is stopped
 - Save : the public, web fetchable action script, to be fetched and launched when a node is saved
 - Delete : the public, web fetchable action script, to be fetched and launched when a node is deleted
-- Tcp_Port : allows the pocollection of ports of the node type to be described individually.
+- Tcp_Port : allows the collection of TCP network ports of the node type to be described individually.
+- Tcp_Range : allows the collection of TCP network ports of the node type to be described as a range.
+- Udp_Port : allows the collection of UDP network ports of the node type to be described individually.
+- Udp_Range : allows the collection of UDP network ports of the node type to be described as a range.
 
 ### Imports
-Node types may be imported instead of being defined in BEAM documents. This encourages reusability.
+Node types may be imported instead of being defined locally in BEAM documents. This encourages reusability.
 
-The following configuration document snippet shows an example of tag definitions.
+The following configuration document snippet shows an example of node import definitions.
 
     resource "amenesik_beam" "small" { 
       ...
@@ -381,7 +390,7 @@ The following configuration document snippet shows an example of tag definitions
     }
 
 ## Complete Example
-The following configuration document shows the creation of a complex multi layer load balenced web application scenario with 6 application servers and two database servers.
+The following configuration document shows the creation of a complex multi layer load balenced web application scenario with 6 application servers and two database servers and three load balancers.
 
     resource "amenesik_beam" "mybeam" {
             template = "template"
@@ -395,11 +404,12 @@ The following configuration document shows the creation of a complex multi layer
                     { path = "tag.Title", value="My New Beam Document" },
                     { path = "tag.SubTitle", value="Generated by Terraform" },
                     { path = "tag.Author", value="Iain James Marshall" },
+                    { path = "tag.Email", value="ijm@amenesik.com" ],
                     { path = "tag.Zone", value="any" },
                     { path = "tag.Provider", value="any" },
                     { path = "tag.Domain", value="myhost.com" },
 
-                    # beam document probe tags (probes to be added to all hardware nodes)
+                    # beam document default probe tags (probes to be added to all hardware nodes)
                     { path = "tag.Probe", value="memory-free" },
                     { path = "tag.Probe", value="disk-free" },
                     { path = "tag.Probe", value="load-average" },
@@ -441,9 +451,9 @@ The following configuration document shows the creation of a complex multi layer
 
                     # template specific type MyDatabase
                     { path = "type.1.name", value = "MyDatabase" },
-                    { path = "type.1.create", value = "wget https://www.myhost.com/install-web-server.sh; bash ./install-database.sh" },
+                    { path = "type.1.create", value = "wget https://www.myhost.com/install-database.sh; bash ./install-database.sh" },
                     { path = "type.1.start", value = "bash ./install-database.sh" },
-                    { path = "type.1.delete", value = "wget https://www.myhost.com/delete-web-server.sh; bash ./delete-database.sh" },
+                    { path = "type.1.delete", value = "wget https://www.myhost.com/delete-database.sh; bash ./delete-database.sh" },
                     { path = "type.1.tcp_port", value = "3306" },
 
                     # template specific type MyWebServer
@@ -455,9 +465,9 @@ The following configuration document shows the creation of a complex multi layer
 
                     # template specific type MyLoadBalancer
                     { path = "type.2.name", value = "MyLoadBalancer" },
-                    { path = "type.2.create", value = "wget https://www.myhost.com/install-web-server.sh; bash ./install-load-balancer.sh" },
+                    { path = "type.2.create", value = "wget https://www.myhost.com/install-load-balancer.sh; bash ./install-load-balancer.sh" },
                     { path = "type.2.start", value = "bash ./install-load-balancer.sh" },
-                    { path = "type.2.delete", value = "wget https://www.myhost.com/delete-web-server.sh; bash ./delete-load-balancer.sh" },
+                    { path = "type.2.delete", value = "wget https://www.myhost.com/delete-load-balancer.sh; bash ./delete-load-balancer.sh" },
                     { path = "type.2.tcp_port", value = "443"  },
                     { path = "type.2.tcp_port", value = "3306" },
                     
@@ -616,7 +626,7 @@ The processing of this BEAM resource, using Terraform Apply, would result in the
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/371fddb9-2b96-420c-bd9b-4d0909f2466e" />
 
-Naturally the use of Terraform Destroy would delete it from the Amenesik Enterprise Cloud.
+Naturally the use of Terraform Destroy would delete the BEAM resource from the Amenesik Enterprise Cloud.
 
 
 
