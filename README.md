@@ -389,6 +389,8 @@ The following configuration document snippet shows an example of node import def
       ]
     }
 
+The use of formal import statments is facultative since node types encountered during node type statements will be added automatically to the document as import statements unless the presence of a local node type definitions is detected.
+
 ## Complete Example
 The following configuration document shows the creation of a complex multi layer load balenced web application scenario with 6 application servers and two database servers and three load balancers.
 
